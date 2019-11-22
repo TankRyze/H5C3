@@ -23,7 +23,7 @@ $(function () {
       //合并代码：defaults与options进行比较，如果属性相同，则用options的覆盖前者。从后往前覆盖！
       this.params = $.extend(defaults, params);
       // 可以波动的最大次数
-      this.waveMaxNum = this.params.imgs.length;
+      this.waveMaxNum = imgs.length;
       // 是否在动画中
       this.isanimating = false;
       // 计时器
@@ -207,14 +207,12 @@ $(function () {
       // 创建对象
       if (imgs.length > 2) {
         var _slide = new _Slide(params);
-        console.log(`_slide`, _slide);
         _slide.init()
       } else {
-        var arr = [1, 2, 3, 4]
-        $.each(arr, function (index, item) {
-          // 如果imgs长度只有一那就循环生成4分方便使用
-          arr[index] = imgs[index] ? imgs[index] : imgs[index - imgs.length]
-        })
+        var arr = []
+        for (var i = 0; i < 4; i++) {
+          arr[i] = imgs[i] ? imgs[i] : imgs[i - imgs.length]
+        }
         params.imgs = arr;
         var _slide = new _Slide(params);
         console.log(`_slide`, _slide);

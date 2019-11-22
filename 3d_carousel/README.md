@@ -16,7 +16,7 @@
 | 配置项 | 配置值 | 默认值 | 是否必填 | 备注 |
 | :---  | :--- | :--- | :---  | ---: |
 | carouselBox | 轮播图在外层的父盒子 | 无 | 是 | 无 |
-| imgs | 图片的数组 | 无 | 是 | 至少两张 |
+| imgs | 图片的数组 | 无 | 是 | 目前只支撑2张图和4张图 |
 | isIndex | 是否显示下标 | true | 否 | Boolean类型 |
 | isControl | 是否显示左右键头 | true | 否 | Boolean类型 |
 | automatic | 自动轮播 | true | 否 | Boolean类型 |
