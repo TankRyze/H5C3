@@ -1,0 +1,95 @@
+/* 公用样式 */
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+/* 轮播图 样式 不可更改该*/
+.container {
+  height: 100%;
+  position: relative;
+}
+
+.items {
+  width: 25%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: all 1s;
+  float: left;
+}
+
+/* .items:hover {
+  transform: rotateX(360deg);
+} */
+.item {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.item:nth-child(1) {
+  transform: rotateX(0deg) translateZ(190px);
+}
+
+.item:nth-child(2) {
+  transform: rotateX(180deg) translateZ(190px);
+}
+
+.item:nth-child(3) {
+  transform: rotateX(90deg) translateZ(190px);
+}
+
+.item:nth-child(4) {
+  transform: rotateX(-90deg) translateZ(190px);
+}
+
+/*左右两个按钮的样式*/
+.control a {
+  color: #fff;
+  font-size: 50px;
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  line-height: 48px;
+  position: absolute;
+  text-decoration: none;
+  font-weight: 900;
+  top: 50%;
+  margin-top: -30px;
+  background: rgba(0, 0, 0, 0);
+  transition: all 1s;
+}
+
+.prev {
+  left: 0px;
+}
+
+.next {
+  right: 0px;
+}
+
+/* 下标的样式 */
+.indexBox {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.indexBox li {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #fff;
+  margin-left: 10px;
+  border-radius: 50%;
+}
+
+.indexBox .ib_active {
+  background: #fff;
+}

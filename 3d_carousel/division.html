@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>3D动画</title>
+  <style>
+    .container {
+      width: 560px;
+      height: 380px;
+      margin: 100px auto;
+      padding: 0;
+      border: 1px solid #0094ff;
+      list-style: none;
+      position: relative;
+    }
+
+    .items {
+      width: 25%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: all 1s;
+      float: left;
+    }
+
+    /*.items:hover {
+			transform: rotateX(360deg);
+		}*/
+    .item {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    .item:nth-child(1) {
+      background: url(images/01.jpg) no-repeat;
+      transform: rotateX(0deg) translateZ(190px);
+    }
+
+    .item:nth-child(2) {
+      background: url(images/02.jpg) no-repeat;
+      transform: rotateX(180deg) translateZ(190px);
+    }
+
+    .item:nth-child(3) {
+      background: url(images/03.jpg) no-repeat;
+      transform: rotateX(90deg) translateZ(190px);
+    }
+
+    .item:nth-child(4) {
+      background: url(images/04.jpg) no-repeat;
+      transform: rotateX(-90deg) translateZ(190px);
+    }
+
+    /*左右两个按钮的样式*/
+    ul a {
+      color: #fff;
+      font-size: 50px;
+      text-align: center;
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      text-decoration: none;
+      font-weight: 900;
+      top: 160px;
+      background: rgba(0, 0, 0, 0);
+      transition: all 1s;
+    }
+
+    ul:hover a {
+      background: rgba(0, 0, 0, .5);
+    }
+
+    .prev {
+      left: 0px;
+    }
+
+    .next {
+      right: 0px;
+    }
+
+    /*让第二个li的图片向左移动*/
+    .items:nth-child(2) .item {
+      background-position: -140px 0px;
+    }
+
+    .items:nth-child(3) .item {
+      background-position: -280px 0px;
+    }
+
+    .items:nth-child(4) .item {
+      background-position: -420px 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>3d轮播图</h1>
+  <ul class="container">
+    <li class="items">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </li>
+    <li class="items">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </li>
+    <li class="items">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </li>
+    <li class="items">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </li>
+    <a class="prev" href="javascript:;">&lt;</a>
+    <a class="next" href="javascript:;">&gt;</a>
+  </ul>
+</body>
+
+</html>
+<script src='js/jquery-3.0.0.min.js'></script>
+<script>
+  $(function (e) {
+    //定义变量记录点击次数
+    var clickNum = 0,
+      isanimating = false;
+    $('.prev').on('click', function (e) {
+      if (isanimating == true) return;
+      isanimating = true;
+      clickNum++;
+      $('.items').each(function (i, v) {
+        $(v).css({
+          'transform': 'rotateX(' + clickNum * 90 + 'deg)',
+          'transitionDelay': i * 0.25 + 's'
+        });
+      });
+      setTimeout(function () {
+        isanimating = false;
+      }, $('.items').length * 0.25 * 1000);
+    });
+
+    $('.next').on('click', function (e) {
+      if (isanimating == true) return;
+      isanimating = true;
+      clickNum--;
+      $('.items').each(function (i, v) {
+        $(v).css({
+          'transform': 'rotateX(' + clickNum * 90 + 'deg)',
+          'transitionDelay': i * 0.25 + 's'
+        })
+      });
+      setTimeout(function () {
+        isanimating = false;
+      }, $('.items').length * 0.25 * 1000);
+    });
+  });
+</script>
