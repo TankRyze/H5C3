@@ -184,9 +184,21 @@ $(function () {
         // 创建标签
         this.create()
         // 自动
+        var that = this
         if (this.params.automatic) {
           this.play()
         }
+        // 解决离开页面再回来多次滚动bug
+        // document添加visibilitychange事件
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden) {
+            if (that.params.automatic) {
+              that.play()
+            }
+          } else {
+            clearInterval(that.params.interval)
+          }
+        }, false);
         console.log(this.params)
       }
     }
