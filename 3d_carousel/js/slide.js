@@ -9,7 +9,7 @@ $(function () {
     function _Slide(params) {
       //设置默认的事件和修改属性
       var defaults = {
-        direction: 'top', // 轮播方向
+        direction: 'portrait', // 轮播方向 portrait 纵向滚动 transverse 横向滚动
         imgs: [], // 轮播图片
         indexList: 0, //下标
         partition: 4, // 分割数
@@ -38,21 +38,93 @@ $(function () {
         function createImgBox() {
           var ul = document.createElement('ul');
           ul.className = 'container'
-          $.each(that.params.imgs, function (index, item) {
+          var partition = that.params.partition
+          if (partition == 0) {
+            $(ul).css({
+              'transform-style': 'preserve-3d',
+              transition: 'all 1s'
+            })
+          }
+          // li是分割多少份
+          for (let index = 0; index < partition; index++) {
             var li = document.createElement('li')
+            var direction = that.params.direction
             li.className = 'items'
-            var partition = that.params.partition
-            if (partition) {
-              for (let i = 0; i < partition; i++) {
+            if (partition > 1) {
+              $(li).css({
+                width: direction === 'portrait' ? 100 / partition + '%' : '100%',
+                height: direction === 'portrait' ? '100%' : 100 / partition + '%',
+                'transform-style': 'preserve-3d',
+                transition: 'all 1s'
+              });
+              // div是每份几个面
+              for (let i = 0; i < that.params.imgs.length; i++) {
                 var div = document.createElement('div')
                 div.className = 'item'
                 div.style.background = 'url(' + that.params.imgs[i] + ') no-repeat';
-                div.style['background-position'] = -140 * index + 'px 0px';
+                div.style['background-position'] = direction === 'portrait' ? -($this.width() / partition) * index + 'px 0px' : '0px ' + (-($this.height() / partition) * index) + 'px';
+                // 纵向
+                if (direction === 'portrait') {
+                  if (i === 3) {
+                    div.style.transform = 'rotateX(-90deg)' + ' translateZ( ' + $this.height() / 2 + 'px)'
+                  } else {
+                    div.style.transform = 'rotateX(' + i * 90 + 'deg)' + ' translateZ( ' + $this.height() / 2 + 'px)'
+                  }
+
+                } else {
+                  // 横向
+                  if (i === 3) {
+                    div.style.transform = 'rotateY(-90deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
+                  } else {
+                    div.style.transform = 'rotateY(' + i * 90 + 'deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
+                  }
+
+                }
+
                 $(li).append(div)
+              }
+            } else {
+              // 4张图的时候
+              if (index == 3) {
+                // li公用样式
+                $(li).css({
+                  width: '100%',
+                  position: 'absolute',
+                  background: 'url(' + that.params.imgs[index] + ') no-repeat',
+                  transform: 'rotateX(-90deg)' + ' translateZ(190px)'
+                });
+                // 横向
+                if (direction === 'transverse') {
+                  $(li).css({
+                    transform: 'rotateY(-90deg)' + ' translateZ(' + $this.width() / 2 + 'px)'
+                  });
+                  // 纵向
+                } else {
+                  $(li).css({
+                    transform: 'rotateX(-90deg)' + ' translateZ(' + $this.height() / 2 + 'px)'
+                  });
+                }
+
+              } else {
+                $(li).css({
+                  width: '100%',
+                  position: 'absolute',
+                  background: 'url(' + item + ') no-repeat',
+                  transform: 'rotateX(' + index * 90 + 'deg)' + ' translateZ(' + $this.height() / 2 + 'px)'
+                });
+                if (direction === 'transverse') {
+                  $(li).css({
+                    transform: 'rotateY(' + index * 90 + 'deg)' + ' translateZ(' + $this.width() / 2 + 'px)'
+                  });
+                } else {
+                  $(li).css({
+                    transform: 'rotateX(' + index * 90 + 'deg)' + ' translateZ(' + $this.height() / 2 + 'px)'
+                  });
+                }
               }
             }
             $(ul).append(li)
-          })
+          }
           return ul
         }
         // 创建控制框
@@ -146,21 +218,47 @@ $(function () {
         // 当前下标
         var indexCount = 0
         if (Math.abs(this.waveNum) < this.waveMaxNum) {
-          indexCount = this.waveNum
+          indexCount = Math.abs(this.waveNum)
         }
         if (Math.abs(this.waveNum) % this.waveMaxNum > 0) {
-          indexCount = this.waveNum % this.waveMaxNum
+          indexCount = Math.abs(this.waveNum) % this.waveMaxNum
         }
         // 将动画中变量设置true
         this.isanimating = true;
         var that = this
         // 图形动画
-        $('.items').each(function (i, v) {
-          $(v).css({
-            'transform': 'rotateX(' + that.waveNum * 90 + 'deg)',
-            'transitionDelay': i * 0.25 + 's'
-          });
-        });
+        if (this.params.partition > 1) {
+          // 横向
+          if (this.params.direction === 'transverse') {
+            $('.items').each(function (i, v) {
+              $(v).css({
+                'transform': 'rotateY(' + that.waveNum * 90 + 'deg)',
+                'transitionDelay': i * 0.25 + 's'
+              });
+            });
+          } else {
+            $('.items').each(function (i, v) {
+              $(v).css({
+                'transform': 'rotateX(' + that.waveNum * 90 + 'deg)',
+                'transitionDelay': i * 0.25 + 's'
+              });
+            });
+          }
+
+        } else {
+          // 横向
+          if (this.params.direction === 'transverse') {
+            $('.container').css({
+              'transform': 'rotateY(' + that.waveNum * 90 + 'deg)'
+            })
+          } else {
+            $('.container').css({
+              'transform': 'rotateX(' + that.waveNum * 90 + 'deg)'
+            })
+          }
+
+        }
+
         // 索引样式切换
         $('.indexBox li').removeClass('ib_active')
         $('.indexBox li').eq(indexCount).addClass('ib_active')
@@ -175,7 +273,7 @@ $(function () {
         var that = this
         var automatic_itemc = this.params.automatic_item + $('.items').length * 0.25 * 1000
         this.params.interval = setInterval(function () {
-          that.waveNum++
+          that.waveNum--
           that.scroll(that.waveNum)
         }, automatic_itemc)
       },

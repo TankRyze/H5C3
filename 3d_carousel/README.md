@@ -21,6 +21,8 @@
 | isControl | 是否显示左右键头 | true | 否 | Boolean类型 |
 | automatic | 自动轮播 | true | 否 | Boolean类型 |
 | automatic_item | 自动轮播时间 | 3000 | 否 | 毫秒值 |
+| direction | 轮播方向 | portrait | 否 | 轮播方向 portrait 纵向滚动 transverse 横向滚动 都是字符串类型 默认纵向|
+| partition | 分割数 | 4 | 否 | 纵向是宽的公约数 横向是高的公约数 如果不是公约数切割会出现不准的情况|
 
 ### 使用方法
 

@@ -31,7 +31,10 @@
     $(function () {
       //绑定元素事件
       $('#carouselBox').slide({
-        imgs: ['./images/01.jpg', './images/02.jpg']
+        direction: 'transverse', // 轮播方向 portrait 纵向滚动 transverse 横向滚动
+        partition: 4,
+        automatic: true,
+        imgs: ['./images/01.jpg', './images/02.jpg', './images/03.jpg', './images/04.jpg']
       })
     });
   </script>

@@ -16,10 +16,7 @@ li {
 }
 
 .items {
-  width: 25%;
   height: 100%;
-  transform-style: preserve-3d;
-  transition: all 1s;
   float: left;
 }
 
@@ -30,22 +27,6 @@ li {
   width: 100%;
   height: 100%;
   position: absolute;
-}
-
-.item:nth-child(1) {
-  transform: rotateX(0deg) translateZ(190px);
-}
-
-.item:nth-child(2) {
-  transform: rotateX(90deg) translateZ(190px);
-}
-
-.item:nth-child(3) {
-  transform: rotateX(180deg) translateZ(190px);
-}
-
-.item:nth-child(4) {
-  transform: rotateX(-90deg) translateZ(190px);
 }
 
 /*左右两个按钮的样式*/
