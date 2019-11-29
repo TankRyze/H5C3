@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>html2img</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .s_html {
+            width: 100%;
+            position: relative;
+        }
+
+        .s_html img {
+            display: block;
+        }
+
+        .msg_1,
+        .msg_2 {
+            position: absolute;
+            width: 100%;
+            box-sizing: border-box;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            left: 0;
+        }
+
+        .msg_1 {
+            bottom: 120px;
+            padding: 20px;
+        }
+
+        .msg_1 div {
+            background: red;
+            width: 100%;
+        }
+
+        .msg_2 {
+            bottom: 188px;
+            padding: 20px;
+        }
+
+        .msg_2 div {
+            background: blue;
+            width: 100%;
+        }
+
+        .down {
+            position: absolute;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, .6);
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="s_html" class="s_html">
+        <!-- <a class="down" href="" download="downImg">下载</a> -->
+        <img width="100%" src="./img/1212.jpg" alt="bg">
+        <div class="msg_1" id="msg_1">
+            <div>
+                lpl <span>总冠军</span>
+            </div>
+
+        </div>
+        <div class="msg_2" id="msg_2">
+            <div>
+                IG <span>牛逼</span>
+            </div>
+
+        </div>
+    </div>
+    <!-- <a class="down" id="down" href="" download="downImg">下载</a> -->
+</body>
+<script src="./js/jquery-3.3.1.js"></script>
+<script src="./js/html2canvas.min.js"></script>
+<script>
+    // 获取jq转化为dom对象
+    var s_html = $('#s_html').get(0);
+    // 将html转化成canvas
+    html2canvas(s_html).then(function (canvas) {
+        // canvas宽度
+        var canvasWidth = canvas.width;
+        // canvas高度
+        var canvasHeight = canvas.height;
+        // 清空body
+        $('#s_html').html('');
+        // 渲染canvas
+        $('#s_html').append(canvas);
+        // 调用Canvas2Image插件
+        var img = document.createElement('img')
+        // 转化成base64
+        var base64 = canvas.toDataURL("image/png");
+        console.log(`打印通过canvas方法生成的base64格式图片`, base64);
+        // 方法一通过 new File()方法转化图片格式
+        function base64ToFile(base64, fileName) {
+            var arr = base64.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], fileName, {
+                type: mime
+            });
+        }
+        //调用
+        var imgName = 'base64tofile.png'
+        var file = base64ToFile(base64, imgName);
+        console.log('通过方法1将base64转化成file', file)
+        // 方法2将base64转换为blob, 将blob转换为file
+        //将base64转换为blob
+        function base64ToBlob(base64) {
+            var arr = base64.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]),
+                n = bstr.length,
+                u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], {
+                type: mime
+            });
+        }
+        //将blob转换为file
+        function blobToFile(theBlob, fileName) {
+            theBlob.lastModifiedDate = new Date();
+            theBlob.name = fileName;
+            return theBlob;
+        }
+        //调用
+        var blob = base64ToBlob(base64);
+        var file = blobToFile(blob, imgName);
+        console.log('通过方法2将base64转化成', file);
+        // 将fiel文件转化为base64
+        function fileToBase64(file, callback) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file)
+            reader.onload = function(e){
+                console.log(e.target)
+                console.log(this)
+                callback? callback(this.result) : null
+            }
+        }
+        fileToBase64(file,(newBase64)=>{
+            console.log('新的base64',newBase64)
+            
+        })
+        img.src = base64;
+
+        // 清空body
+        $('#s_html').html('');
+        // 显然img
+        $('#s_html').append(img);
+        // 设置图片的css
+        $(img).css({
+            "width": $('#s_html').width() + "px",
+            "height": 'auto'
+        })
+    })
+</script>
+
+</html>
