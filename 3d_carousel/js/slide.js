@@ -39,7 +39,7 @@ $(function () {
           var ul = document.createElement('ul');
           ul.className = 'container'
           var partition = that.params.partition
-          if (partition == 0) {
+          if (partition < 2) {
             $(ul).css({
               'transform-style': 'preserve-3d',
               transition: 'all 1s'
@@ -50,6 +50,7 @@ $(function () {
             var li = document.createElement('li')
             var direction = that.params.direction
             li.className = 'items'
+            if (partition == 0) partition = 1;
             if (partition > 1) {
               $(li).css({
                 width: direction === 'portrait' ? 100 / partition + '%' : '100%',
@@ -57,71 +58,34 @@ $(function () {
                 'transform-style': 'preserve-3d',
                 transition: 'all 1s'
               });
-              // div是每份几个面
-              for (let i = 0; i < that.params.imgs.length; i++) {
-                var div = document.createElement('div')
-                div.className = 'item'
-                div.style.background = 'url(' + that.params.imgs[i] + ') no-repeat';
-                div.style['background-position'] = direction === 'portrait' ? -($this.width() / partition) * index + 'px 0px' : '0px ' + (-($this.height() / partition) * index) + 'px';
-                // 纵向
-                if (direction === 'portrait') {
-                  if (i === 3) {
-                    div.style.transform = 'rotateX(-90deg)' + ' translateZ( ' + $this.height() / 2 + 'px)'
-                  } else {
-                    div.style.transform = 'rotateX(' + i * 90 + 'deg)' + ' translateZ( ' + $this.height() / 2 + 'px)'
-                  }
-
+            }
+            // div是每份几个面
+            var length = that.params.imgs.length
+            for (let i = 0; i < length; i++) {
+              var imgSrc = that.params.imgs[i]
+              var div = document.createElement('div')
+              div.className = 'item'
+              div.style.background = 'url(' + imgSrc + ') no-repeat';
+              div.style['background-position'] = direction === 'portrait' ? -($this.width() / partition) * index + 'px 0px' : '0px ' + (-($this.height() / partition) * index) + 'px';
+              // 纵向
+              if (direction === 'portrait') {
+                if (i === length - 1) {
+                  div.style.transform = 'rotateX(-' + (360 / length) + 'deg)' + ' translateZ( ' + $this.height() / 2 + 'px)'
                 } else {
-                  // 横向
-                  if (i === 3) {
-                    div.style.transform = 'rotateY(-90deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
-                  } else {
-                    div.style.transform = 'rotateY(' + i * 90 + 'deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
-                  }
-
-                }
-
-                $(li).append(div)
-              }
-            } else {
-              // 4张图的时候
-              if (index == 3) {
-                // li公用样式
-                $(li).css({
-                  width: '100%',
-                  position: 'absolute',
-                  background: 'url(' + that.params.imgs[index] + ') no-repeat',
-                  transform: 'rotateX(-90deg)' + ' translateZ(190px)'
-                });
-                // 横向
-                if (direction === 'transverse') {
-                  $(li).css({
-                    transform: 'rotateY(-90deg)' + ' translateZ(' + $this.width() / 2 + 'px)'
-                  });
-                  // 纵向
-                } else {
-                  $(li).css({
-                    transform: 'rotateX(-90deg)' + ' translateZ(' + $this.height() / 2 + 'px)'
-                  });
+                  div.style.transform = 'rotateX(' +( i * (360 / length) )+ 'deg)' + ' translateZ( ' + $this.height() / 2 + 'px)'
                 }
 
               } else {
-                $(li).css({
-                  width: '100%',
-                  position: 'absolute',
-                  background: 'url(' + item + ') no-repeat',
-                  transform: 'rotateX(' + index * 90 + 'deg)' + ' translateZ(' + $this.height() / 2 + 'px)'
-                });
-                if (direction === 'transverse') {
-                  $(li).css({
-                    transform: 'rotateY(' + index * 90 + 'deg)' + ' translateZ(' + $this.width() / 2 + 'px)'
-                  });
+                // 横向
+                if (i === 3) {
+                  div.style.transform = 'rotateY(-' + (360 / length) + 'deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
                 } else {
-                  $(li).css({
-                    transform: 'rotateX(' + index * 90 + 'deg)' + ' translateZ(' + $this.height() / 2 + 'px)'
-                  });
+                  div.style.transform = 'rotateY(' +( i * (360 / length) )+ 'deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
                 }
+
               }
+
+              $(li).append(div)
             }
             $(ul).append(li)
           }
