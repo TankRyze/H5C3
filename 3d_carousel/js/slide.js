@@ -77,7 +77,7 @@ $(function () {
 
               } else {
                 // 横向
-                if (i === 3) {
+                if (i === length - 1) {
                   div.style.transform = 'rotateY(-' + (360 / length) + 'deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
                 } else {
                   div.style.transform = 'rotateY(' +( i * (360 / length) )+ 'deg)' + ' translateZ( ' + $this.width() / 2 + 'px)'
@@ -189,6 +189,8 @@ $(function () {
         }
         // 将动画中变量设置true
         this.isanimating = true;
+        // 获取图片的张数
+        var imgSum = this.params.imgs.length
         var that = this
         // 图形动画
         if (this.params.partition > 1) {
@@ -196,14 +198,14 @@ $(function () {
           if (this.params.direction === 'transverse') {
             $('.items').each(function (i, v) {
               $(v).css({
-                'transform': 'rotateY(' + that.waveNum * 90 + 'deg)',
+                'transform': 'rotateY(' +( that.waveNum * (360 / imgSum) )+ 'deg)',
                 'transitionDelay': i * 0.25 + 's'
               });
             });
           } else {
             $('.items').each(function (i, v) {
               $(v).css({
-                'transform': 'rotateX(' + that.waveNum * 90 + 'deg)',
+                'transform': 'rotateX(' +( that.waveNum * (360 / imgSum) )+ 'deg)',
                 'transitionDelay': i * 0.25 + 's'
               });
             });
@@ -213,11 +215,11 @@ $(function () {
           // 横向
           if (this.params.direction === 'transverse') {
             $('.container').css({
-              'transform': 'rotateY(' + that.waveNum * 90 + 'deg)'
+              'transform': 'rotateY(' +( that.waveNum * (360 / imgSum) )+ 'deg)'
             })
           } else {
             $('.container').css({
-              'transform': 'rotateX(' + that.waveNum * 90 + 'deg)'
+              'transform': 'rotateX(' +( that.waveNum * (360 / imgSum) )+ 'deg)'
             })
           }
 
